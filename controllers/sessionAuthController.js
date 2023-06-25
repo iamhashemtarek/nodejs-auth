@@ -2,7 +2,7 @@ import { use } from 'bcrypt/promises.js'
 import connect from '../database/index.js'
 import AppError from '../utils/appError.js'
 import catchAsync from '../utils/catchAsync.js'
-import {hash, verfiy} from '../utils/password.js'
+import {hash, verify} from '../utils/password.js'
 
 export const signup = catchAsync(async (req, res, next) => {
     //extract data from request body
@@ -42,7 +42,7 @@ export const login = catchAsync(async (req, res, next) => {
     `;
     const [[user]] = await conn.query(sql, [email])
 
-    if(user.length == 0 || !(await verfiy(password, user.password))) {
+    if(!user || !(await verify(password, user.password))) {
         return next(new AppError('incorrect email or password', 401))
     }
 
@@ -63,13 +63,23 @@ export const login = catchAsync(async (req, res, next) => {
 
 })
 
-export const protect = catchAsync(async (req, res, next) => {
+export const isLoggedIn = catchAsync(async (req, res, next) => {
     if(!req.session || !req.session.user) {
         return next(new AppError('you are not logged in, please login to get access', 401))
     }
 
     next();
 })
+
+export const restrictTo = (...roles) => {
+    return (req, res, next) => {
+         if(!roles.includes(req.session.user.role)) {
+             return next(new AppError('permission denied', 403))
+         }
+ 
+         next();
+    }
+ }
 
 export const logout = catchAsync(async (req, res, next) => {
     req.session.destroy()

@@ -14,6 +14,7 @@ import RedisStore from 'connect-redis';
 import usersRoutes from './routes/usersRoutes.js'
 import AppError from './utils/appError.js'
 import globalErrorHandler from './middlewares/globalErrorHandler.js'
+import cookieParser from 'cookie-parser';
 
 const app = Express();
 
@@ -35,6 +36,7 @@ await redisClinet.connect().then(() => {
 
 //middlewares
 app.use(Express.json())
+app.use(cookieParser())
 app.use(morgan('dev'))
 app.use(session({
     store: new RedisStore({client: redisClinet}),
