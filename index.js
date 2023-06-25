@@ -18,7 +18,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler.js'
 const app = Express();
 
 //dotenv config
-dotenv.config({ path: './config.env' })
+dotenv.config({ path: './.env' })
 
 //redis config
 const redisClinet = createClient({
