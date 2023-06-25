@@ -1,0 +1,22 @@
+{
+    "dev-err": {
+        "driver": "mysql",
+        "host": {"ENV": "HOST"},
+        "port": {"ENV": "DATABASE_PORT"},
+        "user": {"ENV": "DATABASE_USER"},
+        "password": {"ENV": "DATABASE_PASSWORD"},
+        "database": {"ENV": "DATABASE"},
+        "multipleStatement": "true"
+    },
+
+    "dev": {
+        "driver": "mysql",
+        "host": "localhost",
+        "port": "3306",
+        "user": "hashem",
+        "password": "2151963@Ha",
+        "database": "classicmodels"
+    },
+
+    "sql-file" :"true"
+}
